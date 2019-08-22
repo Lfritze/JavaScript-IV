@@ -25,15 +25,27 @@ Prototype Refactor
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
-function GameObject(gameAttr){
-    this.createdAt = gameAttr.createdAt; //date 
-    this.name = gameAttr.name;
-    this.dimensions = gameAttr.dimensions;
-  };
+// function GameObject(gameAttr){
+//     this.createdAt = gameAttr.createdAt; //date 
+//     this.name = gameAttr.name;
+//     this.dimensions = gameAttr.dimensions;
+//   };
   
-  GameObject.prototype.destroy = function(){
-    return `${this.name} was removed from the game`;
-  };
+//   GameObject.prototype.destroy = function(){
+//     return `${this.name} was removed from the game`;
+//   };
+
+class GameObject {
+    constructor(gameAttr){
+      this.createdAt = gameAttr.createdAt; //date 
+      this.name = gameAttr.name;
+      this.dimensions = gameAttr.dimensions;
+    }
+    destroy() {
+      return `${this.name} was removed from the game`;
+    }
+  }
+    
   
   
   /*
@@ -44,15 +56,25 @@ function GameObject(gameAttr){
     * The Object.create() method creates a new object, using an existing object as the prototype of the newly created object.
   */
   
-  function CharacterStats(charAttr){
-    GameObject.call(this, charAttr);
-    this.healthPoints = charAttr.healthPoints;
-  };
+//   function CharacterStats(charAttr){
+//     GameObject.call(this, charAttr);
+//     this.healthPoints = charAttr.healthPoints;
+//   };
   
-  CharacterStats.prototype = Object.create(GameObject.prototype); 
-  CharacterStats.prototype.takeDamage = function () {
-    return `${this.name} took damage.`;
-  }; //inherited from GameObject
+//   CharacterStats.prototype = Object.create(GameObject.prototype); 
+//   CharacterStats.prototype.takeDamage = function () {
+//     return `${this.name} took damage.`;
+//   }; //inherited from GameObject
+
+  class CharacterStats extends GameObject {
+    constructor(charAttr) {
+      super(charAttr);
+      this.healthPoints = charAttr.healthPoints;
+    }
+    takeDamage() {
+      return `${this.name} took damage.`;
+    }
+  }
   
   
   /*
@@ -65,17 +87,30 @@ function GameObject(gameAttr){
     * should inherit takeDamage() from CharacterStats
   */
   
-  function Humanoid(humAttr) {
-    CharacterStats.call(this, humAttr);
-    this.team = humAttr.team;
-    this.weapons = humAttr.weapons;
-    this.language = humAttr.language;
-  };
+//   function Humanoid(humAttr) {
+//     CharacterStats.call(this, humAttr);
+//     this.team = humAttr.team;
+//     this.weapons = humAttr.weapons;
+//     this.language = humAttr.language;
+//   };
   
-  Humanoid.prototype = Object.create(CharacterStats.prototype)
-  Humanoid.prototype.greet = function(){
-    return `${this.name} offers a greeting in ${this.language}.`;
-  };
+//   Humanoid.prototype = Object.create(CharacterStats.prototype)
+//   Humanoid.prototype.greet = function(){
+//     return `${this.name} offers a greeting in ${this.language}.`;
+//   };
+
+class Humanoid extends CharacterStats{
+    constructor(humAttr){
+      super(humAttr);
+      this.team = humAttr.team;
+      this.weapons = humAttr.weapons;
+      this.language = humAttr.language;
+    }
+    greet() {
+      return `${this.name} offers a greeting in ${this.language}.`;
+    }
+  }
+  
   
   /*
     * Inheritance chain: GameObject -> CharacterStats -> Humanoid
